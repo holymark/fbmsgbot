@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Bot Config</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        input {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 280px;
+            
+        }
+        
+        button {
+        width: 300px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+        }
+
+        button:hover {
+            background-color: #0069d9;
+        }
+
+        header {
+            background-color: #f2f2f2;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Facebook Bot Config</h1>
+        <form action="/webhook" method="post">
+            <label for="verify_token">Verify Token</label>
+            <input type="text" name="verify_token" id="verify_token">
+            <label for="page_access_token">Page Access Token</label>
+            <input type="text" name="page_access_token" id="page_access_token">
+            <button type="submit">Submit</button>
+        </form>
+        <div class="error">
+            <!-- {{error}} -->
+        </div>
+        <div class="success">
+            <!-- {{success}} -->
+        </div>
+    </header>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const success = urlParams.get('success');
+        if (error) {
+            document.querySelector('.error').textContent = error;
+        }
+        if (success) {
+            document.querySelector('.success').textContent = success;
+        }
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const verify_token_el = document.querySelector('#verify_token').value;
+            const page_access_token_el = document.querySelector('#page_access_token').value;
+            const _params = {
+                verify_token,
+                page_access_token
+            };
+            const queryString = new URLSearchParams(_params).toString();
+            const response = await fetch('/webhook?' + queryString);
+            const data = await response.text();
+            const params = new URLSearchParams(window.location.search);
+            const verify_token = params.get('verify_token');
+            const page_access_token = params.get('page_access_token');
+
+            
+        })
+
+    </script>
+</body>
+
+</html>
