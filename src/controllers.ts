@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import request from "request";
 
 class WebHook {
-    private verify_token: string;
-    private page_access_token: string;
+     verify_token: string;
+     page_access_token: string;
 
     // Initialize the WebHook class with the provided verify token and page access token
     constructor(verify_token: string, page_access_token: string) {
@@ -15,11 +15,13 @@ class WebHook {
         const mode = req.query['hub.mode'];
         const token = req.query['hub.verify_token'];
         const challenge = req.query['hub.challenge'];
-        console.log(mode, token, challenge);
+        // console.log(mode, token, challenge);
 
         // Check if the request is a verification request
         if (mode && token) {
-            if (mode === 'subscribe' && token === this.verify_token) {
+            // console.log({ VERIFY_TOKEN: this.page_access_token, PAGE_ACCESS_TOKEN:this.verify_token })
+
+            if  (mode === 'subscribe' && token ===  this.verify_token) {
                 console.log('WEBHOOK_VERIFIED');
                 res.status(200).send(challenge);
             } else {
@@ -39,10 +41,12 @@ class WebHook {
                 });
             });
             res.sendStatus(200);
+        } else {
+            res.sendStatus(404);
         }
     }
     // Send a message to the recipient
-    private async send_message(event: any) {
+     async send_message(event: any) {
         const sender_id = event.sender.id;
         const recipient_id = event.recipient.id;
         const message = event.message;
