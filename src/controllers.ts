@@ -19,7 +19,6 @@ class WebHook {
 
         // Check if the request is a verification request
         if (mode && token) {
-            // console.log({ VERIFY_TOKEN: this.page_access_token, PAGE_ACCESS_TOKEN:this.verify_token })
 
             if  (mode === 'subscribe' && token ===  this.verify_token) {
                 console.log('WEBHOOK_VERIFIED');
@@ -69,7 +68,7 @@ class WebHook {
                 (error: any, response: any, body: any) => {
                     if (error) {
                         console.error('Error sending messages: ', error);
-                    } else if (response.statusCode >= 400) {
+} else if (response.statusCode >= 400) {
                         console.error('Error sending messages: ', body.error);
                     }
                 }
